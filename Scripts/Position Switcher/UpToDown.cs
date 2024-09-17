@@ -9,6 +9,7 @@ public class UpToDown : MonoBehaviour
 
     private void Start()
     {
+        // Get the PlayerMovement script from the player object if it is assigned
         if (playerObj != null)
         {
             playerMovementScript = playerObj.GetComponent<PlayerMovement>();
@@ -20,40 +21,40 @@ public class UpToDown : MonoBehaviour
         // Check if the object entering the trigger is the player
         if (other.gameObject == playerObj)
         {
-            // Set the player's position to the target position marker's position
+            // If the target position marker is set, start moving the player
             if (targetPositionMarker != null)
             {
                 StartCoroutine(MovePlayerToTarget());
             }
             else
             {
-                Debug.LogWarning("Target position marker is not set.");
+                Debug.LogWarning("Target position marker is not set."); // Log warning if marker is not set
             }
         }
     }
 
     private IEnumerator MovePlayerToTarget()
     {
-        // Disable PlayerMovement script to avoid conflicts
+        // Disable PlayerMovement script to avoid conflicts during movement
         if (playerMovementScript != null)
         {
             playerMovementScript.enabled = false;
         }
 
-        // Move player to the target position
+        // Move player to the target position if both are set
         if (targetPositionMarker != null && playerObj != null)
         {
             CharacterController characterController = playerObj.GetComponent<CharacterController>();
 
             if (characterController != null)
             {
-                // Temporarily disable CharacterController
+                // Temporarily disable CharacterController to directly set the position
                 characterController.enabled = false;
 
                 // Move the player to the target position
                 playerObj.transform.position = targetPositionMarker.position;
 
-                // Re-enable CharacterController
+                // Re-enable CharacterController after setting the position
                 characterController.enabled = true;
             }
         }
