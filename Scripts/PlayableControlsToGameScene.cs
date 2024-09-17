@@ -10,6 +10,6 @@ public class PlayableControlsToGameScene : MonoBehaviour
     // Update is called once per frame
     void OnTriggerEnter()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneName); // controls a separate scene change that cannot be controlled by the play function from the other script
     }
 }
