@@ -6,34 +6,36 @@ using UnityEngine.AI;
 
 public class DestroyAndSpawnNewTrashAndTrashCan : MonoBehaviour
 {
+    // References to various script components for game management
     private ScoreIncrement scoreIncrement;
     private CountdownTimer countdownTimer;
     private PlayerMovement playerMovement;
 
+    // GameObjects holding references to score, timer, and player movement
     public GameObject scoreIncrementGameObject;
     public GameObject countdownTimerGO;
     public GameObject playerMovementGO;
 
-    // Trash can prefab reference
+    // Prefab for the trash can to spawn
     public GameObject trashCanPrefab;
 
-    // Reference to GameObjects containing relevant scripts to manage rubbish and trash spawn
+    // References to GameObjects that manage the spawning of trash and trash cans
     public GameObject trashCanSpawnerGameObject;
     public GameObject rubbishSpawnerGameObject;
     public GameObject scoreUpdateTriggerSpawnerGameObject;
 
-    // Reference to scripts that manage rubbish and trash can spawn
+    // Script components that handle spawning mechanics
     private TrashCanLocationSpawner trashCanLocationSpawner;
     private TrashCanSpawner trashCanSpawner;
     private RubbishLocationSpawner rubbishLocationSpawner;
     private RubbishSpawner rubbishSpawner;
     private ScoreUpdateTriggerSpawner scoreUpdateTriggerSpawner;
 
-    private bool isHandlingCollision = false;
+    private bool isHandlingCollision = false; // Flag to prevent multiple collision handling
 
     private void Start()
     {
-        // Setting all the script variables to respective script files in project
+        // Initialize the script components by fetching them from the GameObjects
         trashCanLocationSpawner = trashCanSpawnerGameObject.GetComponent<TrashCanLocationSpawner>();
         trashCanSpawner = trashCanSpawnerGameObject.GetComponent<TrashCanSpawner>();
         rubbishLocationSpawner = rubbishSpawnerGameObject.GetComponent<RubbishLocationSpawner>();
@@ -44,70 +46,76 @@ public class DestroyAndSpawnNewTrashAndTrashCan : MonoBehaviour
         playerMovement = playerMovementGO.GetComponent<PlayerMovement>();
     }
 
+    // Called when another collider enters this object's collider
     private void OnTriggerEnter(Collider other)
     {
-        if (isHandlingCollision) return; // Prevent multiple triggers
+        if (isHandlingCollision) return; // Prevent handling multiple triggers simultaneously
 
-        isHandlingCollision = true;
+        isHandlingCollision = true; // Set flag to true to indicate collision is being handled
 
+        // Check the tag of the collided object to perform specific actions
         if (other.CompareTag("Ice Cream"))
         {
             Debug.Log("Ice Cream Detected");
-            scoreIncrement.IceCreamScore();
-            HandleRubbishDestructionAndSpawning(other.gameObject);
-            countdownTimer.remainingTime += 10;
-            playerMovement.walkSpeed += 1;
-            playerMovement.runSpeed += 1;
+            scoreIncrement.IceCreamScore(); // Increment score for ice cream
+            HandleRubbishDestructionAndSpawning(other.gameObject); // Handle destruction and spawning
+            countdownTimer.remainingTime += 10; // Add time to the countdown
+            playerMovement.walkSpeed += 1; // Increase player walk speed
+            playerMovement.runSpeed += 1; // Increase player run speed
         }
         else if (other.CompareTag("Cake"))
         {
             Debug.Log("Cake Detected");
-            scoreIncrement.CakeScore();
-            HandleRubbishDestructionAndSpawning(other.gameObject);
-            countdownTimer.remainingTime += 12;
-            playerMovement.walkSpeed += 2;
-            playerMovement.runSpeed += 2;
+            scoreIncrement.CakeScore(); // Increment score for cake
+            HandleRubbishDestructionAndSpawning(other.gameObject); // Handle destruction and spawning
+            countdownTimer.remainingTime += 12; // Add time to the countdown
+            playerMovement.walkSpeed += 2; // Increase player walk speed
+            playerMovement.runSpeed += 2; // Increase player run speed
         }
-        if (other.CompareTag("Donut"))
+        else if (other.CompareTag("Donut"))
         {
             Debug.Log("Donut Detected");
-            scoreIncrement.DonutScore();
-            HandleRubbishDestructionAndSpawning(other.gameObject);
-            countdownTimer.remainingTime += 17;
-            playerMovement.walkSpeed += 2;
-            playerMovement.runSpeed += 2;
+            scoreIncrement.DonutScore(); // Increment score for donut
+            HandleRubbishDestructionAndSpawning(other.gameObject); // Handle destruction and spawning
+            countdownTimer.remainingTime += 17; // Add time to the countdown
+            playerMovement.walkSpeed += 2; // Increase player walk speed
+            playerMovement.runSpeed += 2; // Increase player run speed
         }
 
-        //isHandlingCollision = false;
+        // Uncomment this if you want to reset the collision flag after handling
+        // isHandlingCollision = false;
     }
 
+    // Handles the destruction of the current rubbish and trash can, and spawns new ones
     private void HandleRubbishDestructionAndSpawning(GameObject rubbish)
     {
-        // Destroy the existing trash and trash can
+        // Destroy the current rubbish and the spawned trash can
         Destroy(rubbish);
         Destroy(trashCanSpawner.spawnedTrashCan);
 
-        // Generate a new random location for trash and trash can
+        // Get new locations for spawning the trash can and rubbish
         Transform newTrashCanSpawnLocation = trashCanLocationSpawner.GetSelectedTrashCanLocation();
         Transform newRubbishLocation = rubbishLocationSpawner.GetSelectedLocation();
 
-        // Spawn new trash can and rubbish
+        // Spawn new trash can at the new location
         Debug.Log("Spawning New Trash Can");
         GameObject newTrashCan = trashCanSpawner.SpawnTrashCanOnMap(trashCanPrefab, newTrashCanSpawnLocation);
 
-        // Spawn score update trigger plane and parent it to the new trash can
+        // Spawn a score update trigger plane and attach it to the new trash can
         Debug.Log("Cloning Plane at New Trash Can Location");
         scoreUpdateTriggerSpawner.ClonePlaneAtLocation(newTrashCan);
     }
 
+    // Sets the references to the spawner GameObjects and their respective components
     public void SetSpawnerReferences(GameObject trashCanSpawnerGO, GameObject rubbishSpawnerGO, GameObject scoreUpdateTriggerSpawnerGO, GameObject trashCanPrefab)
     {
-        // Setting all the script variables to respective script files in project
+        // Assign the spawner GameObjects
         trashCanSpawnerGameObject = trashCanSpawnerGO;
         rubbishSpawnerGameObject = rubbishSpawnerGO;
         scoreUpdateTriggerSpawnerGameObject = scoreUpdateTriggerSpawnerGO;
         this.trashCanPrefab = trashCanPrefab;
 
+        // Initialize the script components by fetching them from the GameObjects
         trashCanLocationSpawner = trashCanSpawnerGameObject.GetComponent<TrashCanLocationSpawner>();
         trashCanSpawner = trashCanSpawnerGameObject.GetComponent<TrashCanSpawner>();
         rubbishLocationSpawner = rubbishSpawnerGameObject.GetComponent<RubbishLocationSpawner>();
