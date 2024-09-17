@@ -27,7 +27,7 @@ public class ButtonClickManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit(); // Quits the application
-        Debug.Log("application is quit"); // Logs a message to the console (useful for debugging in the editor)
+        Debug.Log("application is quit"); // Logs a message to the console (useful for debugging in the editor) actual button exits the game
     }
 
     // Method to hide the instructions and resume the game
