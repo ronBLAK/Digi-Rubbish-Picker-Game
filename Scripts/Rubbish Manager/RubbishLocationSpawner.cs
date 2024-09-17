@@ -5,43 +5,42 @@ using UnityEngine;
 public class RubbishLocationSpawner : MonoBehaviour
 {
     [HideInInspector]
-    public RubbishLocationStruct rubLocStruct = new RubbishLocationStruct();
+    public RubbishLocationStruct rubLocStruct = new RubbishLocationStruct(); // Holds the selected location info
 
-    // Variable to store the selected location
-    private Transform selectedLocation;
+    private Transform selectedLocation; // Variable to store the selected location
 
-    // this stores a random number ranging from 0 to the number of items in the 
-    int randomIndexRubbishLocation;
+    int randomIndexRubbishLocation; // Stores the random index for selecting a location
 
-    // this is the list where all the locations are transferred to from the struct
-    private List<RubbishLocationStruct> rubbishLocationList = new List<RubbishLocationStruct>();
+    private List<RubbishLocationStruct> rubbishLocationList = new List<RubbishLocationStruct>(); // List to hold all rubbish locations
 
     [System.Serializable]
     public struct RubbishLocationStruct
     {
-        public string locationLabel; // inside the struct, this property is a placeholder name for the location for easy identification
-        public Transform locationMarker; // inside the struct, this is where the actual location to spawn the prefab is stored
+        public string locationLabel; // Placeholder name for easy identification of the location
+        public Transform locationMarker; // The actual location marker to spawn the prefab
     }
 
-    public RubbishLocationStruct[] rubbishLoc;
+    public RubbishLocationStruct[] rubbishLoc; // Array of RubbishLocationStruct
 
     public void Start()
     {
-        rubbishLocationList.AddRange(rubbishLoc); // adds all the items in the struct to the list
+        // Add all elements from the rubbishLoc array to the rubbishLocationList
+        rubbishLocationList.AddRange(rubbishLoc);
     }
 
     // Method to retrieve the selected location
     public Transform GetSelectedLocation()
     {
-        randomIndexRubbishLocation = Random.Range(0, rubbishLocationList.Count); // generate a random idex number to pass into the list index to pick the random element from the list
+        // Generate a random index to select a location from the list
+        randomIndexRubbishLocation = Random.Range(0, rubbishLocationList.Count);
 
-        // Store the randomly selected location in the variable
+        // Store the randomly selected location marker in the selectedLocation variable
         selectedLocation = rubbishLocationList[randomIndexRubbishLocation].locationMarker;
 
         // Assign the selected location to rubLocStruct
         rubLocStruct.locationMarker = selectedLocation;
 
-        // Optionally, you can log the selected location for debugging
+        // Optionally log the selected location for debugging
         Debug.Log("Selected Location: " + selectedLocation.position);
 
         return selectedLocation;
