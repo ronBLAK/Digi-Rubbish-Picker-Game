@@ -30,7 +30,7 @@ public class ButtonClickManager : MonoBehaviour
         Debug.Log("application is quit"); // Logs a message to the console (useful for debugging in the editor) actual button exits the game
     }
 
-    // Method to hide the instructions and resume the game
+    // Method to hide the instructions and resume the game (works for all the instruction panels across all scenes)
     public void QuitInstructions()
     {
         instructionAndPauseMenu.SetActive(false); // Deactivates the instructions and pause menu
