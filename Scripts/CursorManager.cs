@@ -2,45 +2,48 @@ using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
-    private bool lastIsMaximized = false;
+    private bool lastIsMaximized = false; // Tracks whether the game window was maximized in the previous frame
 
+    // Start is called before the first frame update
     void Start()
     {
-        ApplyCursorSettings();
+        ApplyCursorSettings(); // Apply the initial cursor settings based on the current window state
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // Check if the game window is maximized by comparing screen dimensions
+        // Check if the game window is maximized by comparing the screen dimensions to the current resolution
         bool isMaximized = (Screen.width == Screen.currentResolution.width && Screen.height == Screen.currentResolution.height);
 
-        // Check if maximized state has changed
+        // Check if the maximized state has changed since the last frame
         if (isMaximized != lastIsMaximized)
         {
-            lastIsMaximized = isMaximized;
-            ApplyCursorSettings();
+            lastIsMaximized = isMaximized; // Update the maximized state
+            ApplyCursorSettings(); // Apply new cursor settings based on the updated state
         }
 
-        // Optionally, handle escape key to show cursor
+        // Optionally, handle the escape key to show the cursor and unlock it
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true; // Make the cursor visible
+            Cursor.lockState = CursorLockMode.None; // Unlock the cursor from the center of the screen
         }
     }
 
+    // Applies the cursor settings based on whether the game is maximized
     void ApplyCursorSettings()
     {
         if (lastIsMaximized)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false; // Hide the cursor when the game is maximized
+            Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
         }
         else
         {
-            // Reset cursor visibility in case it's not maximized
-            Cursor.visible = true; // or set it to false based on your requirements
-            Cursor.lockState = CursorLockMode.None;
+            // Reset cursor visibility and lock state in case the window is not maximized
+            Cursor.visible = true; // Make the cursor visible when not maximized
+            Cursor.lockState = CursorLockMode.None; // Unlock the cursor
         }
     }
 }
