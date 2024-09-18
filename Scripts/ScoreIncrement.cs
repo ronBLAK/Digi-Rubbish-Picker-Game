@@ -8,9 +8,9 @@ public class ScoreIncrement : MonoBehaviour
     public static float currentScore = 0; // Static score that is shared across all instances
 
     // Tier system for different types of rubbish
-    private float iceCreamScore = 2; // Score value for ice cream
-    private float cakeScore = 3;     // Score value for cake
-    private float donutScore = 4;    // Score value for donut
+    private const float iceCreamScore = 2; // Score value for ice cream
+    private const float cakeScore = 3;     // Score value for cake
+    private const float donutScore = 4;    // Score value for donut
 
     public TextMeshProUGUI scoreUI;   // Reference to the UI text component that displays the score
 
